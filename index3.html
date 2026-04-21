@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="r.png">
+<title>Progress Tracker - Discipline</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #111;
+    color: white;
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: red;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1a1a1a;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #333;
+    text-align: center;
+}
+
+th {
+    background: black;
+    color: red;
+    font-size: 14px;
+}
+
+input {
+    width: 70px;
+    padding: 5px;
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+}
+
+button {
+    margin: 10px;
+    padding: 12px 20px;
+    border: none;
+    background: red;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #cc0000;
+}
+</style>
+</head>
+
+<body>
+
+<header>DISCIPLINE</header>
+
+<div class="container">
+
+<h1>30 Day Progress Tracker</h1>
+
+<button onclick="downloadPDF()">Download</button>
+<button onclick="clearAll()">Clear All</button>
+<button onclick="window.location.href='index2.html'">Back</button>
+<table id="tracker">
+<tr>
+    <th>Day</th>
+    <th>Weight</th>
+    <th>Calories (2000kcal)</th>
+    <th>Protein (110g)</th>
+    <th>Water (2L)</th>
+    <th>Steps (10,000)</th>
+    <th>Workout</th>
+    <th>Sleep (8hrs)</th>
+    <th>Energy (7-10)</th>
+</tr>
+</table>
+
+</div>
+
+<!-- LIBRARIES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    function clearAll() {
+        if (!confirm("Are you sure you want to clear all progress?")) return;
+    
+        // clear localStorage
+        localStorage.clear();
+    
+        // reset all inputs
+        document.querySelectorAll("input").forEach(input => {
+            if (input.type === "checkbox") {
+                input.checked = false;
+            } else {
+                input.value = "";
+            }
+        });
+    }
+    </script>
+<script>
+// CREATE TABLE
+const table = document.getElementById("tracker");
+
+for (let i = 1; i <= 30; i++) {
+    let row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>Day ${i}</td>
+        <td><input data-id="w_${i}"></td>
+        <td><input data-id="c_${i}"></td>
+        <td><input data-id="p_${i}"></td>
+        <td><input data-id="water_${i}"></td>
+        <td><input data-id="steps_${i}"></td>
+        <td><input type="checkbox" data-id="work_${i}"></td>
+        <td><input data-id="sleep_${i}"></td>
+        <td><input data-id="energy_${i}"></td>
+    `;
+
+    table.appendChild(row);
+}
+
+// SAVE + LOAD
+document.querySelectorAll("input").forEach(input => {
+    const id = input.dataset.id;
+
+    if (input.type === "checkbox") {
+        input.checked = localStorage.getItem(id) === "true";
+    } else {
+        input.value = localStorage.getItem(id) || "";
+    }
+
+    input.addEventListener("input", () => {
+        if (input.type === "checkbox") {
+            localStorage.setItem(id, input.checked);
+        } else {
+            localStorage.setItem(id, input.value);
+        }
+    });
+});
+
+// DOWNLOAD PDF (MULTI PAGE)
+async function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+
+    const element = document.querySelector(".container");
+
+    const canvas = await html2canvas(element, {
+        scale: 2,
+        backgroundColor: "#111"
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const imgWidth = 210;
+    const pageHeight = 297;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+    }
+
+    pdf.save("discipline_tracker.pdf");
+}
+</script>
+
+</body>
+</html>

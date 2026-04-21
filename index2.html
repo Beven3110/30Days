@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="r.png">
+    <title>My Program - Discipline</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #111;
+            color: white;
+        }
+
+        header {
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #aaa;
+        }
+
+        .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 40px;
+}
+
+        @media(max-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+    width: 100%;
+    max-width: 300px;   /* 🔒 keeps same visual size */
+    height: 160px;      /* same height as before */
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: red;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #cc0000;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    DISCIPLINE
+</header>
+
+<div class="container">
+
+    <h1 data-aos="fade-up">Your 30 Day Transformation</h1>
+    <p data-aos="fade-up">Everything you need. Follow it daily. Stay disciplined.</p>
+
+    <div class="grid">
+
+
+        <!-- Gym -->
+        <div class="card" data-aos="fade-up">
+            <img src="gym.png">
+            <h3>Workouts</h3>
+            <p>Structured gym training</p>
+            <a href="index4.html" class="btn">Start</a>
+        </div>
+
+
+   <!-- Tracker -->
+<div class="card" data-aos="fade-up">
+    <img src="tracker.png" alt="Tracker">
+    <h3>Progress Tracker</h3>
+    <p>Track daily progress</p>
+    <a href="index3.html" class="btn">Track</a>
+</div>
+
+ <!-- Diet -->
+ <div class="card" data-aos="fade-up">
+    <img src="diet.png">
+    <h3>Diet Plans</h3>
+    <p>See the range of diet plans to try</p>
+    <a href="index5.html" class="btn">View Plan</a>
+</div>
+
+<!-- Recipes -->
+<div class="card" data-aos="fade-up">
+    <img src="recipies.png">
+    <h3>Recipes</h3>
+    <p>Simple, high-protein meals to follow</p>
+    <a href="index6.html" class="btn">View Recipes</a>
+</div>
+
+    </div>
+
+</div>
+
+
+
+<section id="contact" style="padding: 40px 20px; text-align: center;">
+
+    <div data-aos="slide-up" style="max-width: 800px; margin: 0 auto;">
+  
+
+        <div id="app"></div>
+
+<script>
+fetch('program.json')
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("app").innerHTML =
+      data.days.map(day => `
+        <h3>Day ${day.dayNumber}: ${day.title}</h3>
+      `).join("");
+  });
+</script>
+    
+  
+      <!-- IMAGE -->
+      <div style="margin: 20px 0;">
+        <img src="r.png" alt="Offer"
+             style="width: 180px; max-width: 100%; display: block; margin: 0 auto; border-radius: 10px;">
+      </div>
+  
+      <!-- TEXT -->
+      <div style="margin-top: 20px;">
+        <h2 style="margin-bottom: 10px; color: red;">We'd love to hear from you!</h2>
+        <p style="font-size: 16px; color: #555;">disciplinestore.au@gmail.com</p>
+      </div>
+  
+    </div>
+  
+  </section>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
+
+</body>
+</html>
